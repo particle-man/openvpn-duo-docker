@@ -1,12 +1,12 @@
 # Original credit: https://github.com/kylemanna/docker-openvpn
 
 # Smallest base image
-FROM centos:latest
+FROM ubuntu:latest
 
 MAINTAINER Charles Brown <charlibr@cisco.com>
 
-RUN yum install -y epel-release && yum update -y && \
-    yum install -y openvpn gcc openssl  && \
+RUN apt-get update && \
+    apt-get install -y openvpn gcc openssl curl make iptables && \
     curl -L https://github.com/duosecurity/duo_openvpn/tarball/master > /tmp/duo-openvpn.tgz && \
     cd /tmp && tar xvzf duo-openvpn.tgz && cd duosecurity-duo_openvpn* && make install && cd / && \
     rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/cache/distfiles/*
