@@ -6,7 +6,7 @@ FROM ubuntu:latest
 MAINTAINER Charles Brown <charlibr@cisco.com>
 
 RUN apt-get update && apt-get upgrade && \
-    apt-get install -y openvpn gcc openssl curl make iptables && \
+    apt-get install -y openvpn gcc openssl curl make iptables python && \
     curl -L https://github.com/duosecurity/duo_openvpn/tarball/master > /tmp/duo-openvpn.tgz && \
     cd /tmp && tar xvzf duo-openvpn.tgz && cd duosecurity-duo_openvpn* && make install && cd / && \
     rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/cache/distfiles/*
