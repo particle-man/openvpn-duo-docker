@@ -1,15 +1,11 @@
 # Original credit: https://github.com/kylemanna/docker-openvpn
-
-# Smallest base image
-FROM ubuntu:latest
-
 MAINTAINER Charles Brown <charlibr@cisco.com>
-
+FROM ubuntu:18.04
 RUN apt-get update && apt-get upgrade && \
     apt-get install -y openvpn gcc openssl curl make iptables python && \
     curl -L https://github.com/duosecurity/duo_openvpn/tarball/master > /tmp/duo-openvpn.tgz && \
     cd /tmp && tar xvzf duo-openvpn.tgz && cd duosecurity-duo_openvpn* && make install && cd / && \
-    rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/cache/distfiles/*
+    rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/cache/distfiles/* && apt-get remove gcc make
 # Needed by scripts
 ENV OPENVPN /etc/openvpn
 
