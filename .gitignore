@@ -1,0 +1,35 @@
+# Editors
+*~
+*#
+.#*
+\#*#
+.*.sw[a-z]
+*.un~
+.cache
+.idea
+
+# Development
+.vagrant/
+venv/
+roles/*/meta/.galaxy_install_info
+roles/**/.cache/
+deploy/**/.cache/
+*.retry
+
+# build products...
+*.py[co]
+
+# Mac OS X stuff...
+.DS_Store
+
+# molecule
+roles/*/.molecule/
+deploy/**/.molecule/
+
+# others
+.bundle/
+
+# eclipse
+.project
+*.iso
+
