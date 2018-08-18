@@ -6,7 +6,7 @@ LABEL upstream="https://github.com/kylemanna/docker-openvpn"
 RUN apt-get update && apt-get upgrade 
 RUN apt-get install -y gcc openssl make python git
 WORKDIR /tmp/git-clone
-RUN git clone https://github.com/duosecurity/duo_openvpn.git
+RUN git clone --single-branch -b 2.2 https://github.com/duosecurity/duo_openvpn.git
 WORKDIR /tmp/git-clone/duo_openvpn
 RUN make install 
 
