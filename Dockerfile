@@ -3,7 +3,9 @@ LABEL maintainer="Charles Brown <charlibr@cisco.com>"
 LABEL description="Ubuntu based openvpn enhanced with Duo MFA auth support"
 LABEL upstream="https://github.com/kylemanna/docker-openvpn"
 
-RUN apt-get update && apt-get upgrade 
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update && apt-get -y upgrade 
 RUN apt-get install -y gcc openssl make python git
 WORKDIR /tmp/git-clone
 RUN git clone --single-branch -b 2.2 https://github.com/duosecurity/duo_openvpn.git
