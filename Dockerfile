@@ -1,20 +1,26 @@
-# Original credit: https://github.com/kylemanna/docker-openvpn
-MAINTAINER Charles Brown <charlibr@cisco.com>
+FROM ubuntu:18.04 as builder
+LABEL maintainer="Charles Brown <charlibr@cisco.com>"
+LABEL description="Ubuntu based openvpn enhanced with Duo MFA auth support"
+LABEL upstream="https://github.com/kylemanna/docker-openvpn"
+
+RUN apt-get update && apt-get upgrade 
+RUN apt-get install -y gcc openssl make python git
+WORKDIR /tmp/git-clone
+RUN git clone --single-branch -b 2.2 https://github.com/duosecurity/duo_openvpn.git
+WORKDIR /tmp/git-clone/duo_openvpn
+RUN make install 
+
 FROM ubuntu:18.04
-RUN apt-get update && apt-get upgrade && \
-    apt-get install -y openvpn gcc openssl curl make iptables python && \
-    curl -L https://github.com/duosecurity/duo_openvpn/tarball/master > /tmp/duo-openvpn.tgz && \
-    cd /tmp && tar xvzf duo-openvpn.tgz && cd duosecurity-duo_openvpn* && make install && cd / && \
-    rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/cache/distfiles/* && apt-get remove gcc make
+RUN apt-get update && apt-get upgrade 
+RUN apt-get install -y openvpn openssl iptables python
+
+COPY --from=builder /opt/duo /opt/duo
+COPY bin /usr/local/bin
+RUN chmod -R 0755 /usr/local/bin
+
 # Needed by scripts
 ENV OPENVPN /etc/openvpn
-
 VOLUME ["/etc/openvpn"]
 
-# Internally uses port 1194/tcp, remap using `docker run -p 443:1194/udp`
-EXPOSE 1194/tcp
-
+EXPOSE 1194
 CMD ["ovpn_run"]
-
-ADD ./bin /usr/local/bin
-RUN chmod a+x /usr/local/bin/*
