@@ -13,7 +13,10 @@ WORKDIR /tmp/git-clone/duo_openvpn
 RUN make install 
 
 FROM ubuntu:18.04
-RUN apt-get update && apt-get upgrade 
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update && apt-get -y upgrade 
 RUN apt-get install -y openvpn openssl iptables python
 
 COPY --from=builder /opt/duo /opt/duo
